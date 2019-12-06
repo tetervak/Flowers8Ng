@@ -4,6 +4,5 @@ export class Flower {
   public label: string;
   public price: string;
   public description: string;
-  public smallImgSrc: string;
-  public largeImgSrc: string;
+  public imgSrc: string;
 }

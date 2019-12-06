@@ -12,14 +12,11 @@ export class FlowerDataService {
     this.httpClient = httpClient;
     this.flowers = [];
     this.flowerData = new BehaviorSubject<Flower[]>(this.flowers);
-    this.largeImages = [];
     this.loadFlowerCatalog();
   }
   private flowerCatalogUri = 'assets/data/flower-catalog.json';
   private readonly flowerData: BehaviorSubject<Flower[]>;
   private readonly flowers: Flower[];
-  // noinspection JSMismatchedCollectionQueryUpdate
-  private largeImages: HTMLImageElement[];
   private httpClient: HttpClient;
   private static item2Flower(id: number, item: FlowerCatalogItem): Flower {
     const flower = new Flower();
@@ -28,8 +25,7 @@ export class FlowerDataService {
     flower.label = item.label;
     flower.price = item.price;
     flower.description = item.description;
-    flower.largeImgSrc = 'assets/images/flowers/' + item.picture.large;
-    flower.smallImgSrc = 'assets/images/flowers/' + item.picture.small;
+    flower.imgSrc = 'assets/images/flowers/' + item.picture.small;
     return flower;
   }
   // get the list of the Flower objects
@@ -49,15 +45,6 @@ export class FlowerDataService {
     items.forEach(
       (item: FlowerCatalogItem, index: number) =>
         this.flowers.push(FlowerDataService.item2Flower(index, item)));
-    this.preloadLargeImages();
     this.flowerData.next(this.flowers);
-  }
-  // preload the large images from the server
-  private preloadLargeImages() {
-    this.flowers.forEach(flower => {
-      const image: HTMLImageElement = new Image();
-      image.src = flower.largeImgSrc;
-      this.largeImages.push(image);
-    });
   }
 }
